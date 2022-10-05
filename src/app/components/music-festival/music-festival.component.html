@@ -1,0 +1,52 @@
+<header>
+  <mat-toolbar>
+    <div class="header-container">
+      <h1 class="mat-title">Music Festival Data</h1>
+    </div>
+  </mat-toolbar>
+</header>
+<div class="body-container">
+  <div class="fetchInfo" *ngIf="!loaded">
+    <span>
+      <h3>Fetching online data...</h3>
+      <mat-spinner [diameter]="20"></mat-spinner>
+    </span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div *ngIf="loaded">
+    <h3 *ngIf="recordLabels.size === 0">No records found.</h3>
+    <mat-list *ngFor="let record of recordLabels | keyvalue">
+      <mat-list-item>
+        <h2>{{ record.key }}</h2>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-list>
+          <mat-list-item
+            *ngFor="let bands of record.value | keyvalue"
+            class="bands-list"
+          >
+            <div matLine>
+              <h3>{{ bands.key }}</h3>
+            </div>
+            <div
+              matLine
+              *ngIf="getLengthOfSets(bands.value) > 0; else other_content"
+            >
+              <ul
+                class="festival-list"
+                *ngFor="let festival of getRecordArray(bands.value)"
+              >
+                <li>{{ festival }}</li>
+              </ul>
+            </div>
+            <ng-template #other_content
+              ><div matLine>No festival found</div></ng-template
+            >
+          </mat-list-item>
+        </mat-list>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-list>
+  </div>
+</div>
